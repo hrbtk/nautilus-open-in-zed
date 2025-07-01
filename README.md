@@ -1,8 +1,8 @@
-# Open Directory in Zed (*WIP*)
+# Open File/Directory in Zed
 
 Inspired by https://github.com/SimBoi/nautilus-open-in-vscode
 
-An extension for Nautilus, adds a menu item to the right-click directory/background to open folder in Zed. Also works for bulk opening files.
+An extension for Nautilus, adds a menu item to the right-click directory/background to open file/folder in Zed. Also works for bulk opening files.
 
 ## 🚀 Installation
 
