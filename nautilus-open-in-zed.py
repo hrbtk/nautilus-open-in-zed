@@ -21,7 +21,7 @@ class OpenInZedEditorExtention(GObject.GObject, Nautilus.MenuProvider):
         is_background: bool,
     ) -> List[Nautilus.MenuItem]:
         menu_item = Nautilus.MenuItem(
-            name="OpenInZedEditorExtention::OpenInZed" + "Background" if is_background else "",
+            name="OpenInZedEditorExtention::OpenInZed" + ("Background" if is_background else ""),
             label="Open in Zed",
             tip="Open the selected files in Zed Editor.",
             icon="",
@@ -36,11 +36,19 @@ class OpenInZedEditorExtention(GObject.GObject, Nautilus.MenuProvider):
 
     def open_in_zed(self, files: List[Nautilus.FileInfo]) -> None:
         import subprocess
+        import shutil
+        import os
+        zed = shutil.which("zed")
+        if zed is None:
+            subprocess.run(
+                ["notify-send", "Zed not found", "‘zed’ executable isn’t on PATH."]
+            )
+            return
         if len(files) == 1 and files[0].is_directory():
             # Open folder in Zed if only one directory is selected
             folder_path = files[0].get_location().get_path()
-            subprocess.run(["zed", "-n", folder_path])
+            subprocess.run([zed, "-n", folder_path])
         else:
             # Open files in Zed if multiple files are selected, disregarding directories
             file_paths = [file.get_location().get_path() for file in files if not file.is_directory()]
-            subprocess.run(["zed"] + file_paths)
+            subprocess.run([zed] + file_paths)
